@@ -1,9 +1,10 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>全国硕士研究生招生考试初试成绩查询系统</title>
+    <!-- 恢复官方可用的脚本，修复排版完全丢失的问题 -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -227,24 +228,24 @@
                 <tbody>
                     <tr>
                         <td class="py-5 px-12">[101] 思想政治理论</td>
-                        <td class="text-center">78</td>
+                        <td class="text-center" id="score-101">78</td>
                     </tr>
                     <tr>
                         <td class="py-5 px-12">[204] 英语（二）</td>
-                        <td class="text-center">79</td>
+                        <td class="text-center" id="score-204">79</td>
                     </tr>
                     <tr>
                         <td class="py-5 px-12">[302] 数学（二）</td>
-                        <td class="text-center">132</td>
+                        <td class="text-center" id="score-302">132</td>
                     </tr>
                     <tr>
                         <td class="py-5 px-12">[911] 心理健康教育</td>
-                        <td class="text-center">137</td>
+                        <td class="text-center" id="score-911">137</td>
                     </tr>
                     <!-- 总分行 -->
                     <tr>
                         <td class="py-5 px-12">总分</td>
-                        <td class="text-center">426</td>
+                        <td class="text-center" id="score-total">426</td>
                     </tr>
                 </tbody>
             </table>
@@ -295,8 +296,22 @@
             const name = document.getElementById('studentName').value;
             const id = document.getElementById('studentId').value;
             
+            // 生成随机分数
+            const score101 = Math.floor(Math.random() * 101); // 0-100
+            const score204 = Math.floor(Math.random() * 101); // 0-100
+            const score302 = Math.floor(Math.random() * 151); // 0-150
+            const score911 = Math.floor(Math.random() * 151); // 0-150
+            const totalScore = score101 + score204 + score302 + score911;
+
+            // 更新页面上的分数显示
+            document.getElementById('score-101').innerText = score101;
+            document.getElementById('score-204').innerText = score204;
+            document.getElementById('score-302').innerText = score302;
+            document.getElementById('score-911').innerText = score911;
+            document.getElementById('score-total').innerText = totalScore;
+            
             // 组装扫码后显示的文字信息
-            const qrText = `【研招网初试成绩核实】\n姓名：${name}\n考生编号：${id}\n总分：426\n[101]思想政治理论：78\n[204]英语（二）：79\n[302]数学（二）：132\n[911]心理健康教育：137`;
+            const qrText = `【研招网初试成绩核实】\n姓名：${name}\n考生编号：${id}\n总分：${totalScore}\n[101]思想政治理论：${score101}\n[204]英语（二）：${score204}\n[302]数学（二）：${score302}\n[911]心理健康教育：${score911}`;
 
             // 使用稳定可靠的 QuickChart QR API 接口，完全脱离本地 JS 库依赖，避免了未定义及溢出错误
             const qrUrl = `https://quickchart.io/qr?text=${encodeURIComponent(qrText)}&size=90&margin=0`;
